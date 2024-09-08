@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportation Problem Solver Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <img src="G:\msc project\logo.png" alt="Logo" class="logo">
+    <!-- Sign-In Container -->
+    <div id="signInContainer" class="container active">
+        <h2>Sign In</h2>
+        <form id="signInForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Sign In</button>
+            <p id="signInError" class="error"></p>
+            <p><span class="new-here">New Here? </span><a href="#" id="showRegisterLink" class="link-text">Create an Account</a></p>
+        </form>
+    </div>
+
+    <!-- Registration Container -->
+    <div id="registerContainer" class="container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="newUsername">New Username:</label>
+            <input type="text" id="newUsername" required>
+            <label for="newPassword">Create Password:</label>
+            <input type="password" id="newPassword" required>
+            <button type="submit">Submit</button>
+            <p id="registerError" class="error"></p>
+            <p><a href="#" id="showSignInLink" class="link-text">Back to Sign In</a></p>
+        </form>
+    </div>
+
+    <!-- Transportation Problem Solver -->
+    <div id="problemSolverContainer" class="container">
+        <h2>Transportation Problem Solver</h2>
+        <div class="dropdown">
+            DASHBOARD
+            <div class="dropdown-content">
+                <a href="#" id="pastHistory">Past History</a>
+                <a href="#" id="logOutLink">Log Out</a>
+            </div>
+        </div>
+        <form id="inputForm">
+            <h3>Input Data</h3>
+            <label for="supply">Supply (comma-separated):</label>
+            <input type="text" id="supply" placeholder="e.g., 10, 20, 30" required>
+            <label for="demand">Demand (comma-separated):</label>
+            <input type="text" id="demand" placeholder="e.g., 15, 25, 20" required>
+            <label for="cost">Cost Matrix (comma-separated rows, semicolon-separated rows):</label>
+            <textarea id="cost" placeholder="e.g., 8,6,10;9,7,4;3,4,2" required></textarea>
+            <div class="method-selector">
+                <input type="radio" id="northWest" name="method" value="northWest" checked>
+                <label for="northWest">Northwest Method</label>
+                <input type="radio" id="leastCost" name="method" value="leastCost">
+                <label for="leastCost">Least Cost Method</label>
+            </div>
+            <button type="submit">Solve</button>
+            <p id="inputError" class="error"></p>
+        </form>
+
+        <!-- Results Display -->
+        <div id="results">
+            <h2>Results</h2>
+            <table id="resultsTable">
+                <thead>
+                    <tr id="headerRow">
+                        <th>Supply/Demand</th>
+                        <!-- Dynamic headers -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Results will be dynamically added here -->
+                </tbody>
+            </table>
+            <p>Total Cost: <span id="totalCost">0</span></p>
+            <button id="newCalculationButton">New Calculations</button>
+        </div>
+    </div>
+
+    <!-- Past History Container -->
+    <div id="pastHistoryContainer" class="container">
+        <h3>Your Past History</h3>
+        <button id="homeButton"></button>
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Demand</th>
+                    <th>Supply</th>
+                    <th>Northwest Method Cost</th>
+                    <th>Least Cost Method Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Past history will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
