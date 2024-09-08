@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportation Problem Solver Portal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+         body {
+             position: relative;
+             margin: 0;
+             padding: 0;
+             font-family: "Roboto", san-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+
+             }
+         .logo {
+               position: absolute;
+            top: 20px; /* Adjust distance from the top */
+            left: 20px; /* Adjust distance from the left */
+            width: 300px; /* Adjust width */
+            height: auto; /* Maintain aspect ratio */
+            z-index: 1000; /* Ensure it's above other content */
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            border: 2px solid #333;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: none;
+            position: relative;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .dropdown {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 40px;
+            position: absolute;
+            right: 20px;
+            top: 60px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            min-width: 160px;
+            z-index: 1000;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-button {
+            background-color: #0056b3;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        input, textarea, select, button {
+            width: calc(100% - 24px);
+            padding: 12px;
+            margin: 8px auto;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 120px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        #results {
+            display: none;
+            padding: 20px;
+            background: #e9ecef;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #results h2 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        #results table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        #results table, #results th, #results td {
+            border: 1px solid #333;
+            padding: 10px;
+        }
+
+        #results th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #results td {
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .method-selector {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .method-selector label {
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .method-selector label:hover {
+            background-color: #ddd;
+        }
+
+        .method-selector input[type="radio"] {
+            display: none;
+        }
+
+        .method-selector input[type="radio"]:checked + label {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .link-text {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .link-text:hover {
+            text-decoration: underline;
+        }
+
+        .new-here {
+            color: black;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                width: 100%;
+            }
+
+            input, textarea, button {
+                width: 100%;
+            }
+        }
+
+        /* Past History Table Styles */
+        #historyTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #historyTable, #historyTable th, #historyTable td {
+            border: 1px solid #333;
+        }
+
+        #historyTable th, #historyTable td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        #historyTable th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Home Button Styles */
+        #homeButton {
+            background: url('https://img.icons8.com/material-outlined/24/000000/home.png') no-repeat center center;
+            background-size: 20px 20px;
+            border: none;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #007bff;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #homeButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<img src="G:\msc project\logo.png" alt="Logo" class="logo">
+    <!-- Sign-In Container -->
+    <div id="signInContainer" class="container active">
+        <h2>Sign In</h2>
+        <form id="signInForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Sign In</button>
+            <p id="signInError" class="error"></p>
+            <p><span class="new-here">New Here? </span><a href="#" id="showRegisterLink" class="link-text">Create an Account</a></p>
+        </form>
+    </div>
+
+    <!-- Registration Container -->
+    <div id="registerContainer" class="container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <label for="newUsername">New Username:</label>
+            <input type="text" id="newUsername" required>
+            <label for="newPassword">Create Password:</label>
+            <input type="password" id="newPassword" required>
+            <button type="submit">Submit</button>
+            <p id="registerError" class="error"></p>
+            <p><a href="#" id="showSignInLink" class="link-text">Back to Sign In</a></p>
+        </form>
+    </div>
+
+    <!-- Transportation Problem Solver -->
+    <div id="problemSolverContainer" class="container">
+        <h2>Transportation Problem Solver</h2>
+        <div class="dropdown">
+            DASHBOARD
+            <div class="dropdown-content">
+                <a href="#" id="pastHistory">Past History</a>
+                <a href="#" id="logOutLink">Log Out</a>
+            </div>
+        </div>
+        <form id="inputForm">
+            <h3>Input Data</h3>
+            <label for="supply">Supply (comma-separated):</label>
+            <input type="text" id="supply" placeholder="e.g., 10, 20, 30" required>
+            <label for="demand">Demand (comma-separated):</label>
+            <input type="text" id="demand" placeholder="e.g., 15, 25, 20" required>
+            <label for="cost">Cost Matrix (comma-separated rows, semicolon-separated rows):</label>
+            <textarea id="cost" placeholder="e.g., 8,6,10;9,7,4;3,4,2" required></textarea>
+            <div class="method-selector">
+                <input type="radio" id="northWest" name="method" value="northWest" checked>
+                <label for="northWest">Northwest Method</label>
+                <input type="radio" id="leastCost" name="method" value="leastCost">
+                <label for="leastCost">Least Cost Method</label>
+            </div>
+            <button type="submit">Solve</button>
+            <p id="inputError" class="error"></p>
+        </form>
+
+        <!-- Results Display -->
+        <div id="results">
+            <h2>Results</h2>
+            <table id="resultsTable">
+                <thead>
+                    <tr id="headerRow">
+                        <th>Supply/Demand</th>
+                        <!-- Dynamic headers -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Results will be dynamically added here -->
+                </tbody>
+            </table>
+            <p>Total Cost: <span id="totalCost">0</span></p>
+            <button id="newCalculationButton">New Calculations</button>
+        </div>
+    </div>
+
+    <!-- Past History Container -->
+    <div id="pastHistoryContainer" class="container">
+        <h3>Your Past History</h3>
+        <button id="homeButton"></button>
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Demand</th>
+                    <th>Supply</th>
+                    <th>Northwest Method Cost</th>
+                    <th>Least Cost Method Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Past history will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const signInContainer = document.getElementById("signInContainer");
+            const registerContainer = document.getElementById("registerContainer");
+            const problemSolverContainer = document.getElementById("problemSolverContainer");
+            const pastHistoryContainer = document.getElementById("pastHistoryContainer");
+
+            const signInForm = document.getElementById("signInForm");
+            const signInError = document.getElementById("signInError");
+            const registerForm = document.getElementById("registerForm");
+            const registerError = document.getElementById("registerError");
+            const inputForm = document.getElementById("inputForm");
+            const inputError = document.getElementById("inputError");
+            const results = document.getElementById("results");
+            const resultsTable = document.getElementById("resultsTable");
+            const totalCost = document.getElementById("totalCost");
+            const historyTable = document.getElementById("historyTable").querySelector("tbody");
+
+            const showRegisterLink = document.getElementById("showRegisterLink");
+            const showSignInLink = document.getElementById("showSignInLink");
+            const logOutLink = document.getElementById("logOutLink");
+            const pastHistoryLink = document.getElementById("pastHistory");
+            const homeButton = document.getElementById("homeButton");
+            const newCalculationButton = document.getElementById("newCalculationButton");
+
+            // Mock user registration data
+            let users = [];
+
+            // Mock past history data
+            let pastHistory = [];
+
+            showRegisterLink.addEventListener("click", function () {
+                signInContainer.classList.remove("active");
+                registerContainer.classList.add("active");
+            });
+
+            showSignInLink.addEventListener("click", function () {
+                registerContainer.classList.remove("active");
+                signInContainer.classList.add("active");
+            });
+
+            registerForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const newUsername = document.getElementById("newUsername").value;
+                const newPassword = document.getElementById("newPassword").value;
+
+                if (users.find(user => user.username === newUsername)) {
+                    registerError.textContent = "Username already exists.";
+                    registerError.style.display = "block";
+                } else {
+                    users.push({ username: newUsername, password: newPassword });
+                    registerContainer.classList.remove("active");
+                    signInContainer.classList.add("active");
+                }
+            });
+
+            signInForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                // Allow any username and password to sign in
+                if (username && password) {
+                    signInContainer.classList.remove("active");
+                    problemSolverContainer.classList.add("active");
+                } else {
+                    signInError.textContent = "Invalid username or password.";
+                    signInError.style.display = "block";
+                }
+            });
+
+            inputForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const supply = document.getElementById("supply").value.split(",").map(Number);
+                const demand = document.getElementById("demand").value.split(",").map(Number);
+                const costMatrix = document.getElementById("cost").value.split(";").map(row => row.split(",").map(Number));
+                const selectedMethod = document.querySelector('input[name="method"]:checked').value;
+const totalSupply = supply.reduce((a, b) => a + b, 0);
+    const totalDemand = demand.reduce((a, b) => a + b, 0);
+
+    // Validate that total supply equals total demand
+    if (totalSupply !== totalDemand) {
+        inputError.textContent = "Total supply must equal total demand. Please check your input.";
+        inputError.style.display = "block";
+        return; // Stop the form from being submitted
+    }
+
+                // Validate input
+
+                if (supply.length !== costMatrix.length || demand.length !== costMatrix[0].length) {
+                    inputError.textContent = "Supply and demand lengths must match the cost matrix dimensions.";
+                    inputError.style.display = "block";
+                    return;
+                }
+                inputError.style.display = "none";
+
+                // Perform allocation and calculation
+                let allocationMatrix = Array.from({ length: costMatrix.length }, () => Array(demand.length).fill(0));
+                let resultCost = 0;
+
+                if (selectedMethod === "northWest") {
+                    // North-West Corner method allocation
+                    let i = 0, j = 0;
+                    while (i < supply.length && j < demand.length) {
+                        let allocation = Math.min(supply[i], demand[j]);
+                        allocationMatrix[i][j] = allocation;
+                        resultCost += allocation * costMatrix[i][j];
+                        supply[i] -= allocation;
+                        demand[j] -= allocation;
+                        if (supply[i] === 0) i++;
+                        if (demand[j] === 0) j++;
+                    }
+                } else if (selectedMethod === "leastCost") {
+                    // Least Cost method allocation
+                    let costs = [];
+                    for (let i = 0; i < costMatrix.length; i++) {
+                        for (let j = 0; j < demand.length; j++) {
+                            costs.push({ cost: costMatrix[i][j], i, j });
+                        }
+                    }
+                    costs.sort((a, b) => a.cost - b.cost);
+
+                    for (let { cost, i, j } of costs) {
+                        let allocation = Math.min(supply[i], demand[j]);
+                        allocationMatrix[i][j] = allocation;
+                        resultCost += allocation * cost;
+                        supply[i] -= allocation;
+                        demand[j] -= allocation;
+                    }
+                }
+
+                // Display results in the table
+                const tableHeaderRow = resultsTable.querySelector("#headerRow");
+                tableHeaderRow.innerHTML = "<th>Supply/Demand</th>" + demand.map((_, i) => `<th>Demand ${i + 1}</th>`).join("");
+                resultsTable.querySelector("tbody").innerHTML = allocationMatrix.map((row, i) => `
+                    <tr>
+                        <td>Supply ${i + 1}</td>
+                        ${row.map((allocation, j) => `
+                            <td>${allocation > 0 ? `${allocation} (${costMatrix[i][j]})` : "0"}</td>
+                        `).join("")}
+                    </tr>
+                `).join("");
+                totalCost.textContent = resultCost.toFixed(2);
+
+                results.style.display = "block";
+
+                // Save the result to the past history
+                const date = new Date().toLocaleDateString();
+                const northwestCost = selectedMethod === "northWest" ? resultCost : "-";
+                const leastCost = selectedMethod === "leastCost" ? resultCost : "-";
+                pastHistory.push({ date, demand: document.getElementById("demand").value, supply: document.getElementById("supply").value, northwestCost, leastCost });
+            });
+
+            pastHistoryLink.addEventListener("click", function () {
+                problemSolverContainer.classList.remove("active");
+                pastHistoryContainer.classList.add("active");
+
+                // Update the history table
+                historyTable.innerHTML = pastHistory.map(entry => `
+                    <tr>
+                        <td>${entry.date}</td>
+                        <td>${entry.demand}</td>
+                        <td>${entry.supply}</td>
+                        <td>${entry.northwestCost}</td>
+                        <td>${entry.leastCost}</td>
+                    </tr>
+                `).join("");
+            });
+
+            logOutLink.addEventListener("click", function () {
+                problemSolverContainer.classList.remove("active");
+                signInContainer.classList.add("active");
+                results.style.display = "none";
+                signInForm.reset();
+            });
+
+            homeButton.addEventListener("click", function () {
+                pastHistoryContainer.classList.remove("active");
+                problemSolverContainer.classList.add("active");
+            });
+
+            newCalculationButton.addEventListener("click", function () {
+                results.style.display = "none";
+                inputForm.reset();
+                problemSolverContainer.classList.add("active");
+                resultsTable.querySelector("tbody").innerHTML = "";
+            });
+        });
+    </script>
+</body>
+</html>
